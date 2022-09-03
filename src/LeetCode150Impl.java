@@ -1,5 +1,3 @@
-import netscape.security.UserTarget;
-
 import java.util.*;
 
 /**
@@ -501,5 +499,54 @@ public class LeetCode150Impl {
             result[(i + k) % n] = nums[i];
         }
         System.arraycopy(result, 0, nums, 0, n);
+    }
+
+    /**
+     * 地下城游戏,num174
+     * 1. 动态规划
+     * 从右下往左上，计算每一步需要的最少点数
+     * 当计算到[0][0]，就得出所需的最少点数
+     * */
+    public static void calculateMinimumHP(int[][] dungeon){
+
+        int startLeft = dungeon.length - 1;
+        int startRight = dungeon[0].length - 1;
+
+        int[][] minStep = new int[dungeon.length +1][dungeon[0].length+1];
+
+
+        for (int i = startLeft; i >= 0; i--) {
+            for (int j = startRight; j >= 0 ; j--) {
+                int curStep = dungeon[i][j];
+
+                if (startLeft == i && startRight == j){
+                    //说明是最后一间房间
+                    if (curStep >= 0){
+                        minStep[i][j] = 1;
+                    }else {
+                        minStep[i][j] = Math.abs(curStep) + 1;
+                    }
+                }else if (startLeft == i){
+                    //说明是边边上，那么他的值 = 右侧的框框 - 当前
+                    int minValue = minStep[i][j+1] - curStep;
+                    if (minValue <=0){
+                        minValue = 1;
+                    }
+                    minStep[i][j] = minValue;
+                }else if (startRight == j){
+                    int minValue = minStep[i + 1][j] - curStep;
+                    if (minValue <= 0){
+                        minValue = 1;
+                    }
+                    minStep[i][j] = minValue;
+                }else {
+                    int minLast = Math.min(minStep[i+1][j], minStep[i][j +1]);
+
+                    minStep[i][j] = Math.max(minLast - curStep,1);
+                }
+                System.out.println("("+i+","+j+")= "+minStep[i][j]+","+curStep);
+            }
+        }
+        System.out.print("0,0 = "+minStep[0][0]);
     }
 }

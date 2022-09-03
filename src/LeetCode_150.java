@@ -39,8 +39,17 @@ public class LeetCode_150 {
         System.out.println("result=" + Arrays.toString(ints));
     }
 
-    public static void num156() {
+    public static void num140() {
         String s = LeetCode150Impl.convertToTile(28);
         System.out.println("result = " + s);
+    }
+
+    public static void num141(){
+        int[][] hp = {
+                {-2,-3,3},
+                {-5,-10,1},
+                {10,30,-5}};
+
+        LeetCode150Impl.calculateMinimumHP(hp);
     }
 }
